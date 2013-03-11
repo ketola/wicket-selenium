@@ -29,4 +29,5 @@ public class TestHomePage
 		//assert rendered page class
 		tester.assertRenderedPage(HomePage.class);
 	}
+
 }

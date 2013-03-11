@@ -2,11 +2,27 @@ package ketola.wicket.selenium.tester.wicket.selenium.tester;
 
 
 
+import org.apache.wicket.Application;
+import org.apache.wicket.ThreadContext;
+import org.apache.wicket.core.request.handler.IPageProvider;
+import org.apache.wicket.core.request.handler.IPageRequestHandler;
+import org.apache.wicket.core.request.handler.PageAndComponentProvider;
+import org.apache.wicket.core.request.handler.PageProvider;
+import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.protocol.http.IWebApplicationFactory;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
 import org.apache.wicket.protocol.http.WicketServlet;
+import org.apache.wicket.request.IRequestCycle;
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.IRequestMapper;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.component.IRequestablePage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.tester.DummyPanelPage;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
@@ -53,6 +69,7 @@ public class WicketSeleniumTester {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		
 	}
 
 	private WicketServlet newWicketServlet() {
@@ -109,6 +126,58 @@ public class WicketSeleniumTester {
 	public WebDriver startPage(Class<? extends WebPage> page){
 		application.mountPage("startPage", page);
 		driver.get("http://localhost:8091/startPage");
+		return driver;
+	}
+	
+	public WebDriver startPage(final PageLoader loader){
+		application.mount(new IRequestMapper() {
+			
+			@Override
+			public IRequestHandler mapRequest(Request request) {
+				return new RenderPageRequestHandler(new PageProvider(loader.getPage()));
+			}
+			
+			@Override
+			public Url mapHandler(IRequestHandler requestHandler) {
+				return Url.parse("page");
+			}
+			
+			@Override
+			public int getCompatibilityScore(Request request) {
+				return Integer.MAX_VALUE;
+			}
+		});
+		
+		driver.get("http://localhost:8091/page");
+		return driver;
+	}
+	
+	public WebDriver startPanel(final PanelLoader loader){
+		application.mount(new IRequestMapper() {
+			
+
+			@Override
+			public IRequestHandler mapRequest(Request request) {
+				return new RenderPageRequestHandler(new PageProvider(new DummyPanelPage(){
+					@Override
+					protected Panel getTestPanel(String id) {
+						return loader.getPanel(id);
+					}
+				}));
+			}
+			
+			@Override
+			public Url mapHandler(IRequestHandler requestHandler) {
+				return new Url();
+			}
+			
+			@Override
+			public int getCompatibilityScore(Request request) {
+				return Integer.MAX_VALUE;
+			}
+		});
+		
+		driver.get("http://localhost:8091/panel");
 		return driver;
 	}
 }
