@@ -34,15 +34,13 @@ public class WicketSeleniumTester
     public WicketSeleniumTester( WebApplication application )
     {
         this.application = application;
-        setUp();
+        createAndStartServer();
+        createWebDriver();
     }
 
-    public void setUp()
+    public void createAndStartServer()
     {
         this.server = new Server();
-
-        driver = new HtmlUnitDriver( BrowserVersion.FIREFOX_10 );
-        driver.setJavascriptEnabled( true );
 
         Connector con = new SelectChannelConnector();
         con.setPort( 8091 );
@@ -69,7 +67,13 @@ public class WicketSeleniumTester
 
     }
 
-    private WicketServlet newWicketServlet()
+    private void createWebDriver()
+    {
+        driver = new HtmlUnitDriver( BrowserVersion.FIREFOX_10 );
+        driver.setJavascriptEnabled( true );
+    }
+
+    protected WicketServlet newWicketServlet()
     {
         return new WicketServlet()
         {
@@ -105,7 +109,7 @@ public class WicketSeleniumTester
         };
     }
 
-    private ServletContextHandler newServletContextHolder()
+    protected ServletContextHandler newServletContextHolder()
     {
         return new ServletContextHandler( ServletContextHandler.SESSIONS );
     }
@@ -191,7 +195,7 @@ public class WicketSeleniumTester
             @Override
             public Url mapHandler( IRequestHandler requestHandler )
             {
-                return new Url();
+                return Url.parse( "panel" );
             }
 
             @Override
