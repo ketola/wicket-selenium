@@ -1,9 +1,10 @@
 package ketola.wicket.selenium.tester;
 
+import ketola.wicket.selenium.tester.requesthandler.DummyPanelPageProvider;
+
 import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.protocol.http.IWebApplicationFactory;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
@@ -12,7 +13,6 @@ import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.IRequestMapper;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
-import org.apache.wicket.util.tester.DummyPanelPage;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
@@ -45,14 +45,14 @@ public class WicketSeleniumTester
         Connector con = new SelectChannelConnector();
         con.setPort( 8091 );
         server.addConnector( con );
+
         ServletContextHandler context = newServletContextHolder();
         context.setContextPath( "/" );
         server.setHandler( context );
-        WicketServlet servlet = newWicketServlet();
 
+        WicketServlet servlet = newWicketServlet();
         ServletHolder holder = new ServletHolder( servlet );
         holder.setInitParameter( WicketFilter.FILTER_MAPPING_PARAM, "/*" );
-
         holder.setName( "wicket.selenium.servlet" );
         context.addServlet( holder, "/*" );
 
@@ -141,13 +141,20 @@ public class WicketSeleniumTester
 
     public WebDriver startPage( Class<? extends WebPage> page )
     {
-        application.mountPage( "startPage", page );
-        driver.get( "http://localhost:8091/startPage" );
+        String path = randomString();
+        application.mountPage( path, page );
+        driver.get( "http://localhost:8091/" + path );
         return driver;
+    }
+
+    private String randomString()
+    {
+        return "" + System.currentTimeMillis();
     }
 
     public WebDriver startPage( final PageLoader loader )
     {
+        final String path = randomString();
         application.mount( new IRequestMapper()
         {
 
@@ -160,7 +167,7 @@ public class WicketSeleniumTester
             @Override
             public Url mapHandler( IRequestHandler requestHandler )
             {
-                return Url.parse( "page" );
+                return Url.parse( path );
             }
 
             @Override
@@ -170,32 +177,26 @@ public class WicketSeleniumTester
             }
         } );
 
-        driver.get( "http://localhost:8091/page" );
+        driver.get( "http://localhost:8091/" + path );
         return driver;
     }
 
     public WebDriver startPanel( final PanelLoader loader )
     {
+        final String path = randomString();
         application.mount( new IRequestMapper()
         {
 
             @Override
             public IRequestHandler mapRequest( Request request )
             {
-                return new RenderPageRequestHandler( new PageProvider( new DummyPanelPage()
-                {
-                    @Override
-                    protected Panel getTestPanel( String id )
-                    {
-                        return loader.getPanel( id );
-                    }
-                } ) );
+                return new RenderPageRequestHandler( new DummyPanelPageProvider( loader ) );
             }
 
             @Override
             public Url mapHandler( IRequestHandler requestHandler )
             {
-                return Url.parse( "panel" );
+                return Url.parse( path );
             }
 
             @Override
@@ -205,7 +206,7 @@ public class WicketSeleniumTester
             }
         } );
 
-        driver.get( "http://localhost:8091/panel" );
+        driver.get( "http://localhost:8091/" + path );
         return driver;
     }
 }
