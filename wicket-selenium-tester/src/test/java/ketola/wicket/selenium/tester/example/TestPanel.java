@@ -16,7 +16,6 @@ import org.openqa.selenium.WebDriver;
 
 public class TestPanel
 {
-
     private WicketSeleniumTester tester;
 
     @Before
@@ -43,8 +42,6 @@ public class TestPanel
                 return new SimplePanel( id, Model.of( "a text to display" ) );
             }
         } );
-
-        System.out.println( driver.getPageSource() );
 
         assertEquals( "a text to display", driver.findElement( By.xpath( "//span" ) ).getText() );
     }
