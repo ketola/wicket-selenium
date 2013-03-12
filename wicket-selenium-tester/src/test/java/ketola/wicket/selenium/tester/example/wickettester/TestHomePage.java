@@ -1,7 +1,7 @@
-package ketola.wicket.selenium.tester.wicket.selenium.wickettester;
+package ketola.wicket.selenium.tester.example.wickettester;
 
-import ketola.wicket.selenium.tester.wicket.selenium.tester.application.HomePage;
-import ketola.wicket.selenium.tester.wicket.selenium.tester.application.WicketApplication;
+import ketola.wicket.selenium.tester.example.application.HomePage;
+import ketola.wicket.selenium.tester.example.application.WicketApplication;
 
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;

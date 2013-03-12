@@ -1,10 +1,10 @@
-package ketola.wicket.selenium.tester.wicket.selenium.wicketseleniumtester;
+package ketola.wicket.selenium.tester.example;
 
 import static junit.framework.Assert.assertEquals;
-import ketola.wicket.selenium.tester.wicket.selenium.tester.PanelLoader;
-import ketola.wicket.selenium.tester.wicket.selenium.tester.WicketSeleniumTester;
-import ketola.wicket.selenium.tester.wicket.selenium.tester.application.WicketApplication;
-import ketola.wicket.selenium.tester.wicket.selenium.tester.application.panel.SimplePanel;
+import ketola.wicket.selenium.tester.PanelLoader;
+import ketola.wicket.selenium.tester.WicketSeleniumTester;
+import ketola.wicket.selenium.tester.example.application.WicketApplication;
+import ketola.wicket.selenium.tester.example.panel.SimplePanel;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;

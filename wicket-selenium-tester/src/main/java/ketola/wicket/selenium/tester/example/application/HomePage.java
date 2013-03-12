@@ -1,4 +1,4 @@
-package ketola.wicket.selenium.tester.wicket.selenium.tester.application;
+package ketola.wicket.selenium.tester.example.application;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;

@@ -1,4 +1,4 @@
-package ketola.wicket.selenium.tester.wicket.selenium.tester;
+package ketola.wicket.selenium.tester;
 
 import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler;

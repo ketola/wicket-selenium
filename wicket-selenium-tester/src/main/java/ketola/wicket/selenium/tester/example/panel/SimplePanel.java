@@ -1,4 +1,4 @@
-package ketola.wicket.selenium.tester.wicket.selenium.tester.application.panel;
+package ketola.wicket.selenium.tester.example.panel;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;

@@ -1,4 +1,4 @@
-package ketola.wicket.selenium.tester.wicket.selenium.wickettester;
+package ketola.wicket.selenium.tester.example.wickettester;
 
 import org.apache.wicket.util.time.Duration;
 import org.eclipse.jetty.server.Server;
