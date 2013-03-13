@@ -1,5 +1,8 @@
 package ketola.wicket.selenium.tester;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 import ketola.wicket.selenium.tester.requesthandler.DummyPanelPageProvider;
 
 import org.apache.wicket.core.request.handler.PageProvider;
@@ -31,19 +34,36 @@ public class WicketSeleniumTester
 
     private WebApplication application;
 
+    private int port;
+
     public WicketSeleniumTester( WebApplication application )
     {
         this.application = application;
+        findFreePort();
         createAndStartServer();
         createWebDriver();
     }
 
-    public void createAndStartServer()
+    private void findFreePort()
+    {
+        try
+        {
+            ServerSocket socket = new ServerSocket( 0 );
+            port = socket.getLocalPort();
+            socket.close();
+        }
+        catch ( IOException e )
+        {
+            throw new RuntimeException();
+        }
+    }
+
+    private void createAndStartServer()
     {
         this.server = new Server();
 
         Connector con = new SelectChannelConnector();
-        con.setPort( 8091 );
+        con.setPort( port );
         server.addConnector( con );
 
         ServletContextHandler context = newServletContextHolder();
@@ -135,15 +155,20 @@ public class WicketSeleniumTester
 
     public WebDriver startPath( String path )
     {
-        driver.get( "http://localhost:8091/" + path );
+        driver.get( createUrl( path ) );
         return driver;
+    }
+
+    private String createUrl( String path )
+    {
+        return String.format( "http://localhost:%d/%s", port, path );
     }
 
     public WebDriver startPage( Class<? extends WebPage> page )
     {
         String path = randomString();
         application.mountPage( path, page );
-        driver.get( "http://localhost:8091/" + path );
+        driver.get( createUrl( path ) );
         return driver;
     }
 
@@ -177,7 +202,7 @@ public class WicketSeleniumTester
             }
         } );
 
-        driver.get( "http://localhost:8091/" + path );
+        driver.get( createUrl( path ) );
         return driver;
     }
 
@@ -206,7 +231,7 @@ public class WicketSeleniumTester
             }
         } );
 
-        driver.get( "http://localhost:8091/" + path );
+        driver.get( createUrl( path ) );
         return driver;
     }
 }
