@@ -1,7 +1,7 @@
 package ketola.wicket.selenium.tester.example;
 
 import static junit.framework.Assert.assertEquals;
-import ketola.wicket.selenium.tester.PageLoader;
+import ketola.wicket.selenium.tester.IPageLoader;
 import ketola.wicket.selenium.tester.WicketSeleniumTester;
 import ketola.wicket.selenium.tester.example.application.HomePage;
 import ketola.wicket.selenium.tester.example.application.WicketApplication;
@@ -42,7 +42,7 @@ public class TestHomePage
     @Test
     public void homepageRendersSuccessfullyObject()
     {
-        WebDriver driver = tester.startPage( new PageLoader()
+        WebDriver driver = tester.startPage( new IPageLoader()
         {
             @Override
             public Page getPage()

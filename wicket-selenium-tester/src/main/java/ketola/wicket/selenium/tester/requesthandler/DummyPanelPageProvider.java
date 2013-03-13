@@ -1,6 +1,6 @@
 package ketola.wicket.selenium.tester.requesthandler;
 
-import ketola.wicket.selenium.tester.PanelLoader;
+import ketola.wicket.selenium.tester.IPanelLoader;
 
 import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -10,7 +10,7 @@ public class DummyPanelPageProvider
     extends PageProvider
 {
 
-    public DummyPanelPageProvider( final PanelLoader loader )
+    public DummyPanelPageProvider( final IPanelLoader loader )
     {
         super( new DummyPanelPage()
         {

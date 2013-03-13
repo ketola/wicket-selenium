@@ -177,7 +177,7 @@ public class WicketSeleniumTester
         return "" + System.currentTimeMillis();
     }
 
-    public WebDriver startPage( final PageLoader loader )
+    public WebDriver startPage( final IPageLoader loader )
     {
         final String path = randomString();
         application.mount( new IRequestMapper()
@@ -206,7 +206,7 @@ public class WicketSeleniumTester
         return driver;
     }
 
-    public WebDriver startPanel( final PanelLoader loader )
+    public WebDriver startPanel( final IPanelLoader loader )
     {
         final String path = randomString();
         application.mount( new IRequestMapper()
