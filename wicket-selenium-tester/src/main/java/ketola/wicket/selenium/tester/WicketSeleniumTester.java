@@ -1,8 +1,5 @@
 package ketola.wicket.selenium.tester;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-
 import ketola.wicket.selenium.tester.requesthandler.DummyPanelPageProvider;
 
 import org.apache.wicket.core.request.handler.PageProvider;
@@ -16,9 +13,7 @@ import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.IRequestMapper;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
-import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.openqa.selenium.WebDriver;
@@ -34,37 +29,16 @@ public class WicketSeleniumTester
 
     private WebApplication application;
 
-    private int port;
-
     public WicketSeleniumTester( WebApplication application )
     {
         this.application = application;
-        findFreePort();
         createAndStartServer();
         createWebDriver();
     }
 
-    private void findFreePort()
-    {
-        try
-        {
-            ServerSocket socket = new ServerSocket( 0 );
-            port = socket.getLocalPort();
-            socket.close();
-        }
-        catch ( IOException e )
-        {
-            throw new RuntimeException();
-        }
-    }
-
     private void createAndStartServer()
     {
-        this.server = new Server();
-
-        Connector con = new SelectChannelConnector();
-        con.setPort( port );
-        server.addConnector( con );
+        this.server = new Server( 0 );
 
         ServletContextHandler context = newServletContextHolder();
         context.setContextPath( "/" );
@@ -161,7 +135,7 @@ public class WicketSeleniumTester
 
     private String createUrl( String path )
     {
-        return String.format( "http://localhost:%d/%s", port, path );
+        return String.format( "http://localhost:%d/%s", server.getConnectors()[0].getLocalPort(), path );
     }
 
     public WebDriver startPage( Class<? extends WebPage> page )
