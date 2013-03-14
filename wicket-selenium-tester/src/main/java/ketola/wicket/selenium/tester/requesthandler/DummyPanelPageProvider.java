@@ -12,16 +12,26 @@ public class DummyPanelPageProvider
 
     public DummyPanelPageProvider( final IPanelLoader loader )
     {
-        super( new DummyPanelPage()
-        {
-            private static final long serialVersionUID = 1L;
+        super( new PanelLoaderPage( loader ) );
+    }
 
-            @Override
-            protected Panel getTestPanel( String id )
-            {
-                return loader.getPanel( id );
-            }
-        } );
+    private static class PanelLoaderPage
+        extends DummyPanelPage
+    {
+        private static final long serialVersionUID = 1L;
+
+        private IPanelLoader panelLoader;
+
+        private PanelLoaderPage( IPanelLoader loader )
+        {
+            this.panelLoader = loader;
+        }
+
+        @Override
+        protected Panel getTestPanel( String id )
+        {
+            return panelLoader.getPanel( id );
+        }
     }
 
 }
