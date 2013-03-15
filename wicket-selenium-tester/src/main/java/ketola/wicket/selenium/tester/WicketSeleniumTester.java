@@ -1,5 +1,7 @@
 package ketola.wicket.selenium.tester;
 
+import java.io.File;
+
 import ketola.wicket.selenium.tester.requesthandler.DummyPanelPageProvider;
 
 import org.apache.wicket.core.request.handler.PageProvider;
@@ -16,6 +18,7 @@ import org.apache.wicket.request.Url;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.resource.Resource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
@@ -42,6 +45,8 @@ public class WicketSeleniumTester
 
         ServletContextHandler context = newServletContextHolder();
         context.setContextPath( "/" );
+        context.setBaseResource( getWebAppRoot() );
+
         server.setHandler( context );
 
         WicketServlet servlet = newWicketServlet();
@@ -59,6 +64,18 @@ public class WicketSeleniumTester
             throw new RuntimeException( e );
         }
 
+    }
+
+    protected Resource getWebAppRoot()
+    {
+        try
+        {
+            return Resource.newResource( new File( new File( "" ).getAbsolutePath() + "/src/main/webapp" ) );
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException();
+        }
     }
 
     private void createWebDriver()
