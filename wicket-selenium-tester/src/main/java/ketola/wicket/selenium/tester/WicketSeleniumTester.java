@@ -2,19 +2,11 @@ package ketola.wicket.selenium.tester;
 
 import java.io.File;
 
-import ketola.wicket.selenium.tester.requesthandler.DummyPanelPageProvider;
-
-import org.apache.wicket.core.request.handler.PageProvider;
-import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.IWebApplicationFactory;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
 import org.apache.wicket.protocol.http.WicketServlet;
-import org.apache.wicket.request.IRequestHandler;
-import org.apache.wicket.request.IRequestMapper;
-import org.apache.wicket.request.Request;
-import org.apache.wicket.request.Url;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -70,7 +62,7 @@ public class WicketSeleniumTester
     {
         try
         {
-            return Resource.newResource( new File( new File( "" ).getAbsolutePath() + "/src/main/webapp" ) );
+            return Resource.newResource( new File( new File( "." ).getAbsolutePath() + "/src/main/webapp" ) );
         }
         catch ( Exception e )
         {
@@ -170,28 +162,8 @@ public class WicketSeleniumTester
 
     public WebDriver startPage( final IPageLoader loader )
     {
-        final String path = randomString();
-        application.mount( new IRequestMapper()
-        {
-
-            @Override
-            public IRequestHandler mapRequest( Request request )
-            {
-                return new RenderPageRequestHandler( new PageProvider( loader.getPage() ) );
-            }
-
-            @Override
-            public Url mapHandler( IRequestHandler requestHandler )
-            {
-                return Url.parse( path );
-            }
-
-            @Override
-            public int getCompatibilityScore( Request request )
-            {
-                return Integer.MAX_VALUE;
-            }
-        } );
+        String path = randomString();
+        application.mount( new PageRequestMapper( loader, path ) );
 
         driver.get( createUrl( path ) );
         return driver;
@@ -199,28 +171,8 @@ public class WicketSeleniumTester
 
     public WebDriver startPanel( final IPanelLoader loader )
     {
-        final String path = randomString();
-        application.mount( new IRequestMapper()
-        {
-
-            @Override
-            public IRequestHandler mapRequest( Request request )
-            {
-                return new RenderPageRequestHandler( new DummyPanelPageProvider( loader ) );
-            }
-
-            @Override
-            public Url mapHandler( IRequestHandler requestHandler )
-            {
-                return Url.parse( path );
-            }
-
-            @Override
-            public int getCompatibilityScore( Request request )
-            {
-                return Integer.MAX_VALUE;
-            }
-        } );
+        String path = randomString();
+        application.mount( new PanelRequestMapper( loader, path ) );
 
         driver.get( createUrl( path ) );
         return driver;
