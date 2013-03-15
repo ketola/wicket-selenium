@@ -1,4 +1,4 @@
-package ketola.wicket.selenium.tester.example;
+package ketola.wicket.selenium.tester.example.page;
 
 import static junit.framework.Assert.assertEquals;
 import ketola.wicket.selenium.tester.IPageLoader;

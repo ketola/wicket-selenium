@@ -1,4 +1,4 @@
-package ketola.wicket.selenium.tester.example.wickettester;
+package ketola.wicket.selenium.tester.example.wickettester.page;
 
 import ketola.wicket.selenium.tester.example.application.HomePage;
 import ketola.wicket.selenium.tester.example.application.WicketApplication;

@@ -1,4 +1,4 @@
-package ketola.wicket.selenium.tester.example;
+package ketola.wicket.selenium.tester.example.panel;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -7,7 +7,6 @@ import java.io.Serializable;
 import ketola.wicket.selenium.tester.IPanelLoader;
 import ketola.wicket.selenium.tester.WicketSeleniumTester;
 import ketola.wicket.selenium.tester.example.application.WicketApplication;
-import ketola.wicket.selenium.tester.example.panel.SimplePanel;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
