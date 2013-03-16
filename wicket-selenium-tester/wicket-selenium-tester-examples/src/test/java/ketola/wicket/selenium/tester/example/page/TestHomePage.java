@@ -35,6 +35,7 @@ public class TestHomePage
     {
         WebDriver driver = tester.startPage( HomePage.class );
 
+        assertEquals( HomePage.class, tester.getLastRenderedPage().getClass() );
         assertEquals( "Apache Wicket", driver.findElement( By.xpath( "//div[@id='logo']/h1" ) ).getText() );
         assertEquals( "Congratulations!", driver.findElement( By.xpath( "//div[@id='bd']/h2" ) ).getText() );
     }
@@ -51,7 +52,9 @@ public class TestHomePage
             }
         } );
 
+        assertEquals( HomePage.class, tester.getLastRenderedPage().getClass() );
         assertEquals( "Apache Wicket", driver.findElement( By.xpath( "//div[@id='logo']/h1" ) ).getText() );
         assertEquals( "Congratulations!", driver.findElement( By.xpath( "//div[@id='bd']/h2" ) ).getText() );
     }
+
 }

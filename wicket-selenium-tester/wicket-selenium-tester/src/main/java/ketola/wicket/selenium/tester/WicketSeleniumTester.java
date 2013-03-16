@@ -2,11 +2,15 @@ package ketola.wicket.selenium.tester;
 
 import java.io.File;
 
+import org.apache.wicket.IPageRendererProvider;
+import org.apache.wicket.Page;
+import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.IWebApplicationFactory;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
 import org.apache.wicket.protocol.http.WicketServlet;
+import org.apache.wicket.request.handler.render.PageRenderer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -24,11 +28,20 @@ public class WicketSeleniumTester
 
     private WebApplication application;
 
+    private Page lastRenderedPage;
+
     public WicketSeleniumTester( WebApplication application )
     {
         this.application = application;
         createAndStartServer();
         createWebDriver();
+        configureForTesting( application );
+    }
+
+    protected void configureForTesting( WebApplication application )
+    {
+        application.setPageRendererProvider( new LastPageRecordingPageRendererProvider(
+                                                                                        application.getPageRendererProvider() ) );
     }
 
     private void createAndStartServer()
@@ -176,5 +189,29 @@ public class WicketSeleniumTester
 
         driver.get( createUrl( path ) );
         return driver;
+    }
+
+    public Page getLastRenderedPage()
+    {
+        return lastRenderedPage;
+    }
+
+    private class LastPageRecordingPageRendererProvider
+        implements IPageRendererProvider
+    {
+        private final IPageRendererProvider delegate;
+
+        public LastPageRecordingPageRendererProvider( IPageRendererProvider delegate )
+        {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public PageRenderer get( RenderPageRequestHandler handler )
+        {
+            Page newPage = (Page) handler.getPageProvider().getPageInstance();
+            lastRenderedPage = newPage;
+            return delegate.get( handler );
+        }
     }
 }

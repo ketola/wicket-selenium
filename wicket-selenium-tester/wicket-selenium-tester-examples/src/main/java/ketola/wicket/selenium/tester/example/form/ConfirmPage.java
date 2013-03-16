@@ -13,6 +13,7 @@ public class ConfirmPage
 
     public ConfirmPage( IModel<Person> person )
     {
+        super( person );
         add( label( "name", person ) );
         add( label( "address", person ) );
         add( label( "zip", person ) );
