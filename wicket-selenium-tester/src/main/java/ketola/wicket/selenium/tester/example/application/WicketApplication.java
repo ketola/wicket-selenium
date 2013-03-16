@@ -1,5 +1,7 @@
 package ketola.wicket.selenium.tester.example.application;
 
+import ketola.wicket.selenium.tester.example.form.FormPage;
+
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 
@@ -28,7 +30,6 @@ public class WicketApplication
     public void init()
     {
         super.init();
-
-        // add your configuration here
+        mountPage( "formPage", FormPage.class );
     }
 }

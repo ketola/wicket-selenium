@@ -28,6 +28,8 @@ public class TestPanel
     {
         tester.startPage( new DummyPanelPage()
         {
+            private static final long serialVersionUID = 1L;
+
             @Override
             protected Panel getTestPanel( String id )
             {

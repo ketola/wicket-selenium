@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>Form Page</title>
+	</head>
+	<body>
+		<form wicket:id="form">
+			<div wicket:id="feedback"></div>
+			Name: <input type="text" wicket:id="name"/><br/>
+			Address: <input type="text" wicket:id="address"/><br/>
+			Zip: <input type="text" wicket:id="zip"/><br/>
+			City: <input type="text" wicket:id="city"/><br/>
+			Country: <input type="text" wicket:id="country"/>
+			
+			<input type="submit" wicket:id="submit" value="Submit"/>
+		</form>
+	</body>
+</html>

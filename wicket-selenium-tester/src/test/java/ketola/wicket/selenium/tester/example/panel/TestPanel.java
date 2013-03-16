@@ -41,6 +41,8 @@ public class TestPanel
         WebDriver driver = tester.startPanel( new IPanelLoader()
         {
 
+            private static final long serialVersionUID = 1L;
+
             @Override
             public Panel getPanel( String id )
             {
@@ -62,6 +64,8 @@ public class TestPanel
     private static class PanelLoader
         implements IPanelLoader
     {
+
+        private static final long serialVersionUID = 1L;
 
         public Panel getPanel( String id )
         {
